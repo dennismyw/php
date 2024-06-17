@@ -1,0 +1,53 @@
+-- First
+CREATE TABLE gene_data (
+    Name VARCHAR(50),
+    Chromosome VARCHAR(20),
+    Region VARCHAR(50),
+    Expression_value FLOAT,
+    TPM FLOAT,
+    RPKM FLOAT,
+    Exons INT,
+    Gene_ID VARCHAR(50),
+    Gene_length INT,
+    ENSEMBL VARCHAR(100),
+    Biotype VARCHAR(50),
+    Unique_gene_reads INT,
+    Total_gene_reads INT,
+    Transcripts_annotated INT,
+    Uniquely_identified_transcripts INT,
+    Exon_length INT,
+    Unique_exon_reads INT,
+    Total_exon_reads INT,
+    Ratio_of_unique_to_total_exon_reads FLOAT,
+    Unique_exon_exon_reads INT,
+    Total_exon_exon_reads INT,
+    Unique_intron_reads INT,
+    Total_intron_reads INT,
+    Ratio_of_intron_to_total_gene_reads FLOAT
+);
+
+--Second :  Clean the data to match the schema, NaN item into int, 
+
+-- third
+LOAD DATA INFILE '/xampp/htdocs/GSM715_processed.txt'
+INTO TABLE gene_data
+FIELDS TERMINATED BY '\t'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(Name, Chromosome, Region, Expression_value, TPM, RPKM, Exons, Gene_ID, Gene_length, ENSEMBL, Biotype, Unique_gene_reads, Total_gene_reads, Transcripts_annotated, Uniquely_identified_transcripts, Exon_length, Unique_exon_reads, Total_exon_reads, Ratio_of_unique_to_total_exon_reads, Unique_exon_exon_reads, Total_exon_exon_reads, Unique_intron_reads, Total_intron_reads, Ratio_of_intron_to_total_gene_reads);
+
+K4CIZL5RL7m
+
+CREATE TABLE ppi (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    protein1 VARCHAR(50) NOT NULL,
+    protein2 VARCHAR(50) NOT NULL,
+    combined_score INT NOT NULL
+);
+
+LOAD DATA INFILE 'ppidata.txt' 
+INTO TABLE ppi 
+FIELDS TERMINATED BY ' ' 
+LINES TERMINATED BY '\n' 
+IGNORE 1 LINES 
+(protein1, protein2, combined_score);

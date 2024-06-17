@@ -1,0 +1,191 @@
+/* Existing styles remain unchanged */
+
+body {
+    margin: 0;
+    font-family: ProximaNova-Light, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #3e3e38;
+    text-align: left;
+    background-color: #fff;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    background-color: #004977;
+    padding: 10px 20px;
+}
+
+nav img {
+    width: 100px;
+    margin-right: 20px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav .auth-buttons {
+    margin-left: auto;
+}
+
+nav .btn {
+    color: white;
+    background-color: #007BFF;
+    padding: 10px 20px;
+    text-decoration: none;
+    margin-left: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.auth-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.auth-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.auth-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.auth-container input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.auth-container button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.auth-container button:hover {
+    background-color: #0056b3;
+}
+
+.welcome-text {
+    color: white;
+    margin-right: 10px;
+    /* Adjust as needed */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* New styles for the search results table */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+}
+
+th,
+td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f2f2f2;
+}
+
+/* Adjusted styles for better table alignment */
+th,
+td {
+    padding: 12px;
+    /* Increased padding for better spacing */
+}
+
+th {
+    background-color: #ddd;
+    /* Lighter background color for header cells */
+}
+
+td {
+    background-color: #f2f2f2;
+    /* Light background color for data cells */
+}
+
+* Existing styles remain unchanged */
+
+/* New styles for the search results table */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+    background-color: #007BFF;
+    /* Set background color to blue */
+    color: white;
+    /* Set text color to white */
+}
+
+th,
+td {
+    border: 1px solid #dddddd;
+    text-align: center;
+    /* Align text to center */
+    padding: 12px;
+    /* Adjusted padding for better spacing */
+}
+
+th {
+    background-color: #0056b3;
+    /* Darker blue for header cells */
+}
+
+tr:nth-child(even) {
+    background-color: #0056b3;
+    /* Darker blue for even rows */
+}
+
+tr:nth-child(odd) {
+    background-color: #007BFF;
+    /* Light blue for odd rows */
+}
+
+tr:hover {
+    background-color: #0056b3;
+    /* Darker blue on hover */
+}
