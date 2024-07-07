@@ -1,0 +1,4 @@
+entry_type,primary_accession,uniProtkb_id,annotation_score,protein_existence
+Type1,ACC001,Q12345,4.5,Verified
+Type2,ACC002,P67890,3.2,Predicted
+Type3,ACC003,A98765,2.8,Inferred

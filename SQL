@@ -1,0 +1,233 @@
+-- First
+CREATE TABLE gene_data (
+    Name VARCHAR(50),
+    Chromosome VARCHAR(20),
+    Region VARCHAR(50),
+    Expression_value FLOAT,
+    TPM FLOAT,
+    RPKM FLOAT,
+    Exons INT,
+    Gene_ID VARCHAR(50),
+    Gene_length INT,
+    ENSEMBL VARCHAR(100),
+    Biotype VARCHAR(50),
+    Unique_gene_reads INT,
+    Total_gene_reads INT,
+    Transcripts_annotated INT,
+    Uniquely_identified_transcripts INT,
+    Exon_length INT,
+    Unique_exon_reads INT,
+    Total_exon_reads INT,
+    Ratio_of_unique_to_total_exon_reads FLOAT,
+    Unique_exon_exon_reads INT,
+    Total_exon_exon_reads INT,
+    Unique_intron_reads INT,
+    Total_intron_reads INT,
+    Ratio_of_intron_to_total_gene_reads FLOAT
+);
+
+--Second :  Clean the data to match the schema, NaN item into int, 
+
+-- third
+LOAD DATA INFILE '/xampp/htdocs/GSM715_processed.txt'
+INTO TABLE gene_data
+FIELDS TERMINATED BY '\t'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(Name, Chromosome, Region, Expression_value, TPM, RPKM, Exons, Gene_ID, Gene_length, ENSEMBL, Biotype, Unique_gene_reads, Total_gene_reads, Transcripts_annotated, Uniquely_identified_transcripts, Exon_length, Unique_exon_reads, Total_exon_reads, Ratio_of_unique_to_total_exon_reads, Unique_exon_exon_reads, Total_exon_exon_reads, Unique_intron_reads, Total_intron_reads, Ratio_of_intron_to_total_gene_reads);
+
+K4CIZL5RL7m
+
+CREATE TABLE ppi (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    protein1 VARCHAR(50) NOT NULL,
+    protein2 VARCHAR(50) NOT NULL,
+    combined_score INT NOT NULL
+);
+
+LOAD DATA INFILE 'ppidata.txt' 
+INTO TABLE ppi 
+FIELDS TERMINATED BY ' ' 
+LINES TERMINATED BY '\n' 
+IGNORE 1 LINES 
+(protein1, protein2, combined_score);
+
+-- PTM*************
+CREATE TABLE `comments` (
+ `comment_id` int(11) NOT NULL AUTO_INCREMENT,
+ `entry_id` int(11) DEFAULT NULL,
+ `comment_type` varchar(100) DEFAULT NULL,
+ `value` text DEFAULT NULL,
+ PRIMARY KEY (`comment_id`),
+ KEY `entry_id` (`entry_id`),
+ CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`entry_id`) REFERENCES `entries` (`entry_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `entries` (
+ `entry_id` int(11) NOT NULL AUTO_INCREMENT,
+ `entry_type` varchar(100) DEFAULT NULL,
+ `primary_accession` varchar(20) DEFAULT NULL,
+ `uniProtkb_id` varchar(50) DEFAULT NULL,
+ `annotation_score` decimal(3,1) DEFAULT NULL,
+ `protein_existence` varchar(100) DEFAULT NULL,
+ PRIMARY KEY (`entry_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `entry_audit` (
+ `entry_id` int(11) NOT NULL,
+ `first_public_date` date DEFAULT NULL,
+ `last_annotation_update_date` date DEFAULT NULL,
+ `last_sequence_update_date` date DEFAULT NULL,
+ `entry_version` int(11) DEFAULT NULL,
+ `sequence_version` int(11) DEFAULT NULL,
+ PRIMARY KEY (`entry_id`),
+ CONSTRAINT `entry_audit_ibfk_1` FOREIGN KEY (`entry_id`) REFERENCES `entries` (`entry_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE `organisms` (
+ `organism_id` int(11) NOT NULL AUTO_INCREMENT,
+ `entry_id` int(11) DEFAULT NULL,
+ `scientific_name` varchar(100) DEFAULT NULL,
+ `taxon_id` int(11) DEFAULT NULL,
+ PRIMARY KEY (`organism_id`),
+ KEY `entry_id` (`entry_id`),
+ CONSTRAINT `organisms_ibfk_1` FOREIGN KEY (`entry_id`) REFERENCES `entries` (`entry_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `pathway` (
+ `pathway_id` int(11) NOT NULL AUTO_INCREMENT,
+ `entry_id` int(11) DEFAULT NULL,
+ `pathway_description` text DEFAULT NULL,
+ PRIMARY KEY (`pathway_id`),
+ KEY `entry_id` (`entry_id`),
+ CONSTRAINT `pathway_ibfk_1` FOREIGN KEY (`entry_id`) REFERENCES `entries` (`entry_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE `protein_description` (
+ `entry_id` int(11) NOT NULL,
+ `full_name` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`full_name`)),
+ `short_names` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`short_names`)),
+ `ec_numbers` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`ec_numbers`)),
+ PRIMARY KEY (`entry_id`),
+ CONSTRAINT `protein_description_ibfk_1` FOREIGN KEY (`entry_id`) REFERENCES `entries` (`entry_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `reaction_cross_references` (
+ `reaction_id` int(11) NOT NULL AUTO_INCREMENT,
+ `entry_id` int(11) DEFAULT NULL,
+ `reaction_name` varchar(200) DEFAULT NULL,
+ `reaction_cross_references` text DEFAULT NULL,
+ PRIMARY KEY (`reaction_id`),
+ KEY `entry_id` (`entry_id`),
+ CONSTRAINT `c
+ _ibfk_1` FOREIGN KEY (`entry_id`) REFERENCES `entries` (`entry_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+-- Protein Expression Data Table
+CREATE TABLE protein_expression (
+    protein_id INT AUTO_INCREMENT PRIMARY KEY,
+    time_interval ENUM('12h', '48h', '5d') NOT NULL,
+    upregulated_proteins INT NOT NULL,
+    downregulated_proteins INT NOT NULL,
+    upregulated_proteins_greater_than_1_5_fold INT NOT NULL,
+    downregulated_proteins_less_than_1_5_fold INT NOT NULL
+);
+
+-- Pathogen Information Table
+CREATE TABLE pathogen (
+    pathogen_id INT AUTO_INCREMENT PRIMARY KEY,
+    species VARCHAR(255) NOT NULL,
+    strain VARCHAR(255) NOT NULL
+);
+
+-- Gene Ontology (GO) Terms Analysis Table
+CREATE TABLE go_analysis (
+    go_id INT AUTO_INCREMENT PRIMARY KEY,
+    time_interval ENUM('12h', '48h', '5d') NOT NULL,
+    upregulated_go_terms TEXT NOT NULL,
+    downregulated_go_terms TEXT NOT NULL
+);
+
+-- KEGG Pathway Analysis Table
+CREATE TABLE kegg_pathway_analysis (
+    pathway_id INT AUTO_INCREMENT PRIMARY KEY,
+    pathway_name VARCHAR(255) NOT NULL,
+    hits INT NOT NULL,
+    fdr FLOAT NOT NULL
+);
+
+-- Phosphoproteomic Expression Data Table
+CREATE TABLE phosphoproteomic_expression (
+    phospho_id INT AUTO_INCREMENT PRIMARY KEY,
+    time_interval ENUM('12h', '48h', '5d') NOT NULL,
+    hyperphosphorylated_sites INT NOT NULL,
+    hypophosphorylated_sites INT NOT NULL
+);
+
+-- Phosphoproteomics KEGG Pathway Analysis Table
+CREATE TABLE phospho_kegg_pathway (
+    pathway_id INT AUTO_INCREMENT PRIMARY KEY,
+    pathway_name VARCHAR(255) NOT NULL,
+    hits INT NOT NULL,
+    p_value FLOAT NOT NULL
+);
+
+-- Protein-Protein Interaction Networks Table
+CREATE TABLE protein_interaction (
+    interaction_id INT AUTO_INCREMENT PRIMARY KEY,
+    protein_1 VARCHAR(255) NOT NULL,
+    protein_2 VARCHAR(255) NOT NULL,
+    degree_centrality FLOAT NOT NULL,
+    betweenness_centrality FLOAT NOT NULL
+);
+
+-- Protein Expression Data Table
+INSERT INTO protein_expression (time_interval, upregulated_proteins, downregulated_proteins, upregulated_proteins_greater_than_1_5_fold, downregulated_proteins_less_than_1_5_fold)
+VALUES 
+('12h', 150, 75, 50, 30),
+('48h', 200, 100, 70, 50),
+('5d', 250, 120, 80, 60);
+
+-- Pathogen Information Table
+INSERT INTO pathogen (species, strain)
+VALUES 
+('Influenza A', 'H5N1'),
+('Duck', 'Anas platyrhynchos');
+
+-- Gene Ontology (GO) Terms Analysis Table
+INSERT INTO go_analysis (time_interval, upregulated_go_terms, downregulated_go_terms)
+VALUES 
+('12h', 'immune response, signal transduction', 'metabolic process, cell cycle'),
+('48h', 'response to virus, apoptosis', 'cellular transport, cytoskeleton organization'),
+('5d', 'antigen processing, RNA splicing', 'protein folding, DNA repair');
+
+-- KEGG Pathway Analysis Table
+INSERT INTO kegg_pathway_analysis (pathway_name, hits, fdr)
+VALUES 
+('Influenza A', 15, 0.01),
+('Cytokine-cytokine receptor interaction', 20, 0.02),
+('MAPK signaling pathway', 10, 0.05);
+
+-- Phosphoproteomic Expression Data Table
+INSERT INTO phosphoproteomic_expression (time_interval, hyperphosphorylated_sites, hypophosphorylated_sites)
+VALUES 
+('12h', 30, 20),
+('48h', 45, 25),
+('5d', 50, 30);
+
+-- Phosphoproteomics KEGG Pathway Analysis Table
+INSERT INTO phospho_kegg_pathway (pathway_name, hits, p_value)
+VALUES 
+('Influenza A', 8, 0.03),
+('Cytokine-cytokine receptor interaction', 12, 0.04),
+('MAPK signaling pathway', 5, 0.06);
+
+-- Protein-Protein Interaction Networks Table
+INSERT INTO protein_interaction (protein_1, protein_2, degree_centrality, betweenness_centrality)
+VALUES 
+('ProteinA', 'ProteinB', 0.75, 0.20),
+('ProteinC', 'ProteinD', 0.65, 0.15),
+('ProteinE', 'ProteinF', 0.85, 0.25);
